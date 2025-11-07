@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>Auftragsverwaltung</h2>
+
+{% if erfolg %}
+<div class="info-box info-erfolg">
+  ✅ {{ erfolg }}
+</div>
+{% endif %}
+
+{% if meldungen %}
+<div class="info-box info-fehler">
+  <ul>
+    {% for m in meldungen %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<form method="POST" action="{{ url_for('auftraege') }}">
+  <label>Kunde:</label><br>
+  <select name="kunde_id">
+    {% for k in kunden %}
+      <option value="{{ k.id }}">{{ k.name }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <label>Beschreibung:</label><br>
+  <input type="text" name="beschreibung"><br><br>
+
+  <label>Betrag (€):</label><br>
+  <input type="text" name="betrag"><br><br>
+
+  <label>Datum (YYYY-MM-DD):</label><br>
+  <input type="text" name="datum"><br><br>
+
+  <button type="submit">Auftrag speichern</button>
+</form>
+
+<hr>
+
+<h3>Gespeicherte Aufträge</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr style="background-color:#ddd;">
+    <th>ID</th>
+    <th>Kunde</th>
+    <th>Beschreibung</th>
+    <th>Betrag</th>
+    <th>Datum</th>
+  </tr>
+  {% for a in auftraege %}
+  <tr>
+    <td>{{ a.id }}</td>
+    <td>{{ a.kunde }}</td>
+    <td>{{ a.beschreibung }}</td>
+    <td>{{ a.betrag }} €</td>
+    <td>{{ a.datum }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

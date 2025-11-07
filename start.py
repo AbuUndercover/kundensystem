@@ -1,0 +1,7 @@
+# start.py
+# Startpunkt für die Flask-Anwendung
+
+from app.main import app
+
+if __name__ == "__main__":
+    app.run(debug=True)

@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>Berichte & Auswertungen</h2>
+
+<h3>Gesamtumsatz</h3>
+<p><strong>{{ summe }} €</strong></p>
+
+<h3>Durchschnittlicher Auftragswert</h3>
+<p><strong>{{ durchschnitt }} €</strong></p>
+
+<hr>
+
+<h3>Umsatz pro Kunde</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr style="background-color:#ddd;">
+    <th>Kunde</th>
+    <th>Umsatz (€)</th>
+  </tr>
+  {% for eintrag in umsaetze %}
+  <tr>
+    <td>{{ eintrag.kunde }}</td>
+    <td>{{ eintrag.umsatz }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}

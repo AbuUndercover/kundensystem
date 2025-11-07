@@ -1,0 +1,13 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>CSV-Export</h2>
+
+<p>Hier kannst du deine Daten als CSV-Datei exportieren.</p>
+
+<ul>
+  <li><a href="{{ url_for('export_kunden') }}">📁 Kunden exportieren</a></li>
+  <li><a href="{{ url_for('export_auftraege') }}">📁 Aufträge exportieren</a></li>
+</ul>
+
+<p>Die Dateien werden automatisch heruntergeladen.</p>
+{% endblock %}

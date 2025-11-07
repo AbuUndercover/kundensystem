@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>Willkommen im Kunden- und Auftragsverwaltungssystem</h2>
+
+<p>Dieses System wurde entwickelt, um Kunden und Aufträge einfach zu verwalten.</p>
+
+<hr>
+
+<h3>Funktionen im Überblick:</h3>
+<ul>
+  <li>🧾 <strong>Kundenverwaltung:</strong> Neue Kunden anlegen, anzeigen und bearbeiten</li>
+  <li>📦 <strong>Auftragsverwaltung:</strong> Aufträge erfassen und Kunden zuordnen</li>
+  <li>📊 <strong>Berichte:</strong> Übersicht über Umsatz und Auftragsstatistiken</li>
+  <li>📤 <strong>CSV-Export:</strong> Daten exportieren und sichern</li>
+</ul>
+
+<p>Nutze die Navigation oben, um zu den einzelnen Bereichen zu gelangen.</p>
+
+<div style="margin-top: 20px; text-align: center;">
+  <a href="{{ url_for('kunden') }}">
+    <button>Kunden öffnen</button>
+  </a>
+  <a href="{{ url_for('auftraege') }}">
+    <button>Aufträge öffnen</button>
+  </a>
+</div>
+{% endblock %}

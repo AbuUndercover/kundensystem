@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>Kundenverwaltung</h2>
+
+{% if erfolg %}
+<div class="info-box info-erfolg">
+  ✅ {{ erfolg }}
+</div>
+{% endif %}
+
+{% if meldungen %}
+<div class="info-box info-fehler">
+  <ul>
+    {% for m in meldungen %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+
+<form method="POST" action="{{ url_for('kunden') }}">
+  <label>Name:</label><br>
+  <input type="text" name="name"><br><br>
+
+  <label>E-Mail:</label><br>
+  <input type="text" name="email"><br><br>
+
+  <label>Telefon:</label><br>
+  <input type="text" name="telefon"><br><br>
+
+  <label>Adresse:</label><br>
+  <input type="text" name="adresse"><br><br>
+
+  <button type="submit">Kunde speichern</button>
+</form>
+
+<hr>
+
+<h3>Gespeicherte Kunden</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr style="background-color:#ddd;">
+    <th>ID</th>
+    <th>Name</th>
+    <th>E-Mail</th>
+    <th>Telefon</th>
+    <th>Adresse</th>
+  </tr>
+  {% for k in kunden %}
+  <tr>
+    <td>{{ k.id }}</td>
+    <td>{{ k.name }}</td>
+    <td>{{ k.email }}</td>
+    <td>{{ k.telefon }}</td>
+    <td>{{ k.adresse }}</td>
+  </tr>
+  {% endfor %}
+</table>
+{% endblock %}
