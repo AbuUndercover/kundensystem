@@ -23,9 +23,10 @@ import os
 # ------------------------------------------------------------
 app = Flask(__name__)
 
+
 @app.route('/')
 def home():
-    return "Hallo Welt! Render läuft endlich 🎉"
+    return render_template('index.html')
 
 # ------------------------------------------------------------
 # Startseite
