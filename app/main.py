@@ -15,12 +15,17 @@ from app.speicher import (
 from app.pruefung import pruefe_kunde, pruefe_auftrag
 from app.berichte import gesamtumsatz, umsatz_pro_kunde, durchschnitt_auftrag
 from app.export import export_kunden_csv, export_auftraege_csv
+from flask import Flask 
+import os
 
 # ------------------------------------------------------------
 # Flask-App erstellen
 # ------------------------------------------------------------
 app = Flask(__name__)
 
+@app.route('/')
+def home():
+    return "Hallo Welt! Render läuft endlich 🎉"
 
 # ------------------------------------------------------------
 # Startseite
@@ -120,6 +125,6 @@ def export_auftraege():
 # App-Startpunkt
 # ------------------------------------------------------------
 if __name__ == "__main__":
-    # Nur lokal starten, nicht auf Render
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
 
