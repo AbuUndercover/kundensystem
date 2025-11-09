@@ -1,0 +1,20 @@
+# ------------------------------------------------------------
+# Dateien und Ordner, die nicht versioniert werden sollen
+# ------------------------------------------------------------
+
+# Python-Caches
+__pycache__/
+*.pyc
+
+# Virtuelle Umgebungen
+.venv/
+.env
+
+# Lokale SQLite-Datenbank
+app/app.db
+
+# CSV-Exporte (zeitgestempelte Dateien)
+app/*_export_*.csv
+
+# Sonstige lokale Systemdateien
+.DS_Store

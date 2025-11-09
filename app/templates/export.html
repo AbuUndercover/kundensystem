@@ -2,12 +2,26 @@
 {% block inhalt %}
 <h2>CSV-Export</h2>
 
-<p>Hier kannst du deine Daten als CSV-Datei exportieren.</p>
+<p>Hier kannst du die aktuellen Daten als CSV herunterladen. Die Dateien sind UTF-8 kodiert und mit Semikolon (;) getrennt.</p>
 
-<ul>
-  <li><a href="{{ url_for('export_kunden') }}">📁 Kunden exportieren</a></li>
-  <li><a href="{{ url_for('export_auftraege') }}">📁 Aufträge exportieren</a></li>
-</ul>
+<hr>
 
-<p>Die Dateien werden automatisch heruntergeladen.</p>
+<h3>Kunden-Export</h3>
+<p>Spalten: <strong>ID; Name; E-Mail; Telefon; Adresse; PLZ</strong></p>
+<p>
+  <a href="{{ url_for('export_kunden') }}">📥 Kunden-CSV herunterladen</a>
+</p>
+
+<hr>
+
+<h3>Auftrags-Export</h3>
+<p>Spalten: <strong>ID; Kunde; Beschreibung; Betrag; Datum; Status</strong></p>
+<p>
+  <a href="{{ url_for('export_auftraege') }}">📥 Auftrags-CSV herunterladen</a>
+</p>
+
+<hr>
+<p style="font-size: 0.9em; color: #555;">
+  Tipp: In Excel ggf. beim Import „Trennzeichen = Semikolon“ auswählen. In LibreOffice/Numbers wird es meist automatisch erkannt.
+</p>
 {% endblock %}

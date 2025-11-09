@@ -1,46 +1,74 @@
+# ------------------------------------------------------------
+# CSV-Export: Kunden & Aufträge
+# ------------------------------------------------------------
 import csv
 import os
-from app.db import verbindung_herstellen
+from datetime import datetime
 
-# ------------------------------------------------------------
-# CSV-Export für Kunden
-# ------------------------------------------------------------
-def export_kunden_csv(dateiname="kunden_export.csv"):
-    verbindung = verbindung_herstellen()
-    cursor = verbindung.cursor()
-    cursor.execute("SELECT * FROM kunden")
-    daten = cursor.fetchall()
-    verbindung.close()
+# Import-Fallback
+try:
+    from app.db import verbindung_herstellen
+except ImportError:
+    from db import verbindung_herstellen
 
-    # Datei im app-Ordner speichern
-    pfad = os.path.join(os.path.dirname(__file__), dateiname)
-    with open(pfad, "w", newline="", encoding="utf-8") as csv_datei:
-        writer = csv.writer(csv_datei, delimiter=";")
-        writer.writerow(["ID", "Name", "E-Mail", "Telefon", "Adresse"])
-        for zeile in daten:
-            writer.writerow([zeile["id"], zeile["name"], zeile["email"], zeile["telefon"], zeile["adresse"]])
+
+def _export_pfad(basis):
+    ordner = os.path.dirname(__file__)
+    ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return os.path.join(ordner, f"{basis}_{ts}.csv")
+
+
+def export_kunden_csv():
+    pfad = _export_pfad("kunden_export")
+    v = verbindung_herstellen()
+    c = v.cursor()
+    c.execute("""
+        SELECT id, name, email, telefon, adresse, plz
+        FROM kunden
+        ORDER BY name
+    """)
+    zeilen = c.fetchall()
+    v.close()
+
+    with open(pfad, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        w.writerow(["ID", "Name", "E-Mail", "Telefon", "Adresse", "PLZ"])
+        for r in zeilen:
+            w.writerow([
+                r["id"],
+                r["name"] or "",
+                r["email"] or "",
+                r["telefon"] or "",
+                r["adresse"] or "",
+                r["plz"] or "",
+            ])
     return pfad
 
 
-# ------------------------------------------------------------
-# CSV-Export für Aufträge
-# ------------------------------------------------------------
-def export_auftraege_csv(dateiname="auftraege_export.csv"):
-    verbindung = verbindung_herstellen()
-    cursor = verbindung.cursor()
-    cursor.execute("""
-        SELECT a.id, k.name AS kunde, a.beschreibung, a.betrag, a.datum
+def export_auftraege_csv():
+    pfad = _export_pfad("auftraege_export")
+    v = verbindung_herstellen()
+    c = v.cursor()
+    c.execute("""
+        SELECT a.id, k.name AS kunde, a.beschreibung, a.betrag, a.datum, a.status
         FROM auftraege a
-        JOIN kunden k ON a.kunde_id = k.id
-        ORDER BY a.datum DESC
+        JOIN kunden k ON k.id = a.kunde_id
+        ORDER BY a.datum DESC, a.id DESC
     """)
-    daten = cursor.fetchall()
-    verbindung.close()
+    zeilen = c.fetchall()
+    v.close()
 
-    pfad = os.path.join(os.path.dirname(__file__), dateiname)
-    with open(pfad, "w", newline="", encoding="utf-8") as csv_datei:
-        writer = csv.writer(csv_datei, delimiter=";")
-        writer.writerow(["ID", "Kunde", "Beschreibung", "Betrag", "Datum"])
-        for zeile in daten:
-            writer.writerow([zeile["id"], zeile["kunde"], zeile["beschreibung"], zeile["betrag"], zeile["datum"]])
+    with open(pfad, "w", newline="", encoding="utf-8") as f:
+        w = csv.writer(f, delimiter=';', quoting=csv.QUOTE_MINIMAL)
+        w.writerow(["ID", "Kunde", "Beschreibung", "Betrag", "Datum", "Status"])
+        for r in zeilen:
+            betrag = "" if r["betrag"] is None else str(r["betrag"])
+            w.writerow([
+                r["id"],
+                r["kunde"] or "",
+                r["beschreibung"] or "",
+                betrag,
+                r["datum"] or "",
+                (r["status"] or "").strip() or "offen",
+            ])
     return pfad

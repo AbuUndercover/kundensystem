@@ -23,4 +23,22 @@
   </tr>
   {% endfor %}
 </table>
+
+<hr>
+
+<h3>Aufträge nach Status</h3>
+<table border="1" cellpadding="5" cellspacing="0">
+  <tr style="background-color:#ddd;">
+    <th>Status</th>
+    <th>Anzahl</th>
+    <th>Summe (€)</th>
+  </tr>
+  {% for s in status_daten %}
+  <tr>
+    <td>{{ s.status }}</td>
+    <td>{{ s.anzahl }}</td>
+    <td>{{ s.summe }}</td>
+  </tr>
+  {% endfor %}
+</table>
 {% endblock %}

@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block inhalt %}
+<h2>Auftrag bearbeiten</h2>
+
+{% if meldungen %}
+<div class="info-box info-fehler">
+  <ul>
+    {% for m in meldungen %}
+      <li>{{ m }}</li>
+    {% endfor %}
+  </ul>
+</div>
+{% endif %}
+
+<form method="POST">
+  <label>Kunde:</label><br>
+  <select name="kunde_id">
+    {% for k in kunden %}
+      <option value="{{ k.id }}" {% if k.id == auftrag.kunde_id %}selected{% endif %}>{{ k.name }}</option>
+    {% endfor %}
+  </select><br><br>
+
+  <label>Beschreibung:</label><br>
+  <input type="text" name="beschreibung" value="{{ auftrag.beschreibung }}"><br><br>
+
+  <label>Betrag (€):</label><br>
+  <input type="text" name="betrag" value="{{ auftrag.betrag }}"><br><br>
+
+  <label>Datum (YYYY-MM-DD):</label><br>
+  <input type="text" name="datum" value="{{ auftrag.datum }}"><br><br>
+
+  <label>Status:</label><br>
+  <select name="status">
+    <option value="offen" {% if auftrag.status == 'offen' %}selected{% endif %}>offen</option>
+    <option value="erledigt" {% if auftrag.status == 'erledigt' %}selected{% endif %}>erledigt</option>
+  </select><br><br>
+
+  <button type="submit">Änderungen speichern</button>
+</form>
+
+<br>
+<a href="{{ url_for('auftraege') }}">⬅️ Zurück zur Auftragsliste</a>
+{% endblock %}
